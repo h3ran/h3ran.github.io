@@ -1,14 +1,301 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERAN's Blog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>赫然同学 | 个人主页</title>
+<style>
+:root {
+  --bg-primary: #080c18;
+  --bg-card: rgba(30, 41, 59, 0.45);
+  --text-main: #e2e8f0;
+  --text-sub: #94a3b8;
+  --text-desc: #64748b;
+  --border-color: rgba(148, 163, 184, 0.18);
+  --tag-bg: rgba(59, 130, 246, 0.08);
+  --tag-border: rgba(96, 165, 250, 0.22);
+  /* 时间轴全套统一蓝色，和年份文字同色系 */
+  --timeline-line: rgba(125, 211, 252, 0.25);
+  --dot-color: #7dd3fc;
+  --year-color: #7dd3fc;
+  --avatar-glow: rgba(59, 130, 246, 0.35);
+  --accent-blue: #7dd3fc;
+  --accent-soft: #a5f3fc;
+  --accent-hover: #cffafe;
+}
+
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-card: #f1f5f9;
+  --text-main: #0f172a;
+  --text-sub: #475569;
+  --text-desc: #64748b;
+  --border-color: rgba(148, 163, 184, 0.25);
+  --tag-bg: rgba(37, 99, 235, 0.06);
+  --tag-border: rgba(59, 130, 246, 0.18);
+  --timeline-line: rgba(56, 189, 248, 0.25);
+  --dot-color: #38bdf8;
+  --year-color: #38bdf8;
+  --avatar-glow: rgba(59, 130, 246, 0.25);
+  --accent-blue: #38bdf8;
+  --accent-soft: #0ea5e9;
+  --accent-hover: #0284c7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-main);
+  padding: 60px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+  background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+  radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* 深浅切换按钮，桌面跟随版心，手机贴边不贴浏览器最右 */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: calc((100vw - 720px) / 2 + 24px);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 10px var(--avatar-glow);
+}
+
+/* 点击图标旋转动画 */
+.theme-toggle.rotate .icon {
+  animation: spin 0.4s ease;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 头像发光悬浮 */
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 28px;
+  box-shadow: 0 0 25px var(--avatar-glow);
+  transition: all 0.3s ease;
+  border: 2px solid var(--tag-border);
+}
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px var(--avatar-glow);
+}
+
+/* 标题渐变，仅蓝调渐变，弱化绿色占比 */
+h1 {
+  font-size: 38px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-soft));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 14px;
+}
+[data-theme="light"] h1 {
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.bio {
+  font-size: 19px;
+  color: var(--text-sub);
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+/* 兴趣标签 */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 60px;
+}
+.tag {
+  padding: 8px 18px;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 999px;
+  font-size: 15px;
+  color: var(--accent-soft);
+  transition: 0.25s ease;
+}
+.tag:hover {
+  background: rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+/* 时间轴模块 */
+.timeline-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+.timeline {
+  border-left: 2px solid var(--timeline-line);
+  padding-left: 24px;
+  margin-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.timeline-item {
+  position: relative;
+}
+/* 圆点纯蓝色，无绿色渐变 */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--dot-color);
+  box-shadow: 0 0 12px var(--accent-blue);
+}
+.timeline-year {
+  font-size: 15px;
+  color: var(--year-color);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.timeline-school {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.timeline-desc {
+  font-size: 15px;
+  color: var(--text-desc);
+  margin-top: 4px;
+  line-height: 1.6;
+}
+
+footer {
+  margin-top: 80px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-color);
+  font-size: 14px;
+  color: var(--text-desc);
+}
+/* 链接hover统一蓝色系，彻底移除绿色 */
+a {
+  color: var(--accent-soft);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* 手机端适配 */
+@media (max-width: 768px) {
+  .theme-toggle {
+    right: 24px;
+  }
+}
+</style>
 </head>
 <body>
-    <a href="https://github.com/h3ran"><img src="https://avatars.githubusercontent.com/u/57356757?s=48&v=4" alt=""></a>
-    <p>Get Ready... Something Really Cool</p>
-    <p>Is Coming Soon</p>
+<!-- 主题切换按钮 -->
+<button class="theme-toggle" id="themeBtn">
+  <span class="icon">🌙</span>
+</button>
+
+<img class="avatar" src="avatar.jpg" alt="HeRan">
+
+<h1>赫然同学</h1>
+<p class="bio">heran.me 我的专属小站，记录成长与热爱。即将步入初一的学生，理想是当一名警官 👮‍♂️</p>
+
+<div class="tags">
+  <span class="tag">篮球</span>
+  <span class="tag">球星卡收藏</span>
+  <span class="tag">邮票</span>
+  <span class="tag">编程</span>
+  <span class="tag">电脑</span>
+  <span class="tag">Switch</span>
+  <span class="tag">PS5</span>
+  <span class="tag">Minecraft 我的世界</span>
+</div>
+
+<h2 class="timeline-title">我的成长轨迹</h2>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-year">2017 — 2020</div>
+    <div class="timeline-school">迎宾路幼儿园</div>
+    <div class="timeline-desc">无忧无虑的童年时光，再也回不去了</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-year">2020 — 2026</div>
+    <div class="timeline-school">迎宾路小学</div>
+    <div class="timeline-desc">开始接触篮球、电脑、Switch、PS5，找到自己的爱好</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-year">2026 — 至今</div>
+    <div class="timeline-school">市第二实验中学（初一）</div>
+    <div class="timeline-desc">新阶段，继续学习、探索更多有趣的事物</div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="https://heran.me">heran.me</a> 站点托管于 <a href="https://github.com/" target="_blank">GitHub</a></p>
+</footer>
+
+<script>
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const icon = themeBtn.querySelector('.icon');
+
+// 读取本地存储主题，默认深色
+let currentTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', currentTheme);
+icon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+themeBtn.addEventListener('click', () => {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('theme', currentTheme);
+  icon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+
+  // 旋转动画
+  themeBtn.classList.add('rotate');
+  setTimeout(() => themeBtn.classList.remove('rotate'), 400);
+});
+</script>
+
 </body>
 </html>
