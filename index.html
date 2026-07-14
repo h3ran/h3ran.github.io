@@ -100,6 +100,7 @@ body {
   width: 160px;
   height: 160px;
   border-radius: 20px;
+  /* border-radius: 9999px; */
   object-fit: cover;
   margin-bottom: 28px;
   box-shadow: 0 0 25px var(--avatar-glow);
@@ -153,6 +154,47 @@ h1 {
 .tag:hover {
   background: rgba(59, 130, 246, 0.15);
   transform: translateY(-2px);
+}
+
+/* ===== 新增随笔卡片模块 ===== */
+.essay-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 90px;
+}
+.essay-card {
+  padding: 26px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+}
+.essay-card:nth-child(1) { background: var(--card-1); }
+.essay-card:nth-child(2) { background: var(--card-2); }
+.essay-card:nth-child(3) { background: var(--card-3); }
+.essay-card:nth-child(4) { background: var(--card-4); }
+
+.essay-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.essay-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+.essay-desc {
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+.essay-date {
+  font-size: 13px;
+  color: var(--text-desc);
+  margin-top: 14px;
 }
 
 /* 时间轴模块 */
@@ -244,7 +286,7 @@ a:hover {
 
 <div class="tags">
   <span class="tag">篮球</span>
-  <span class="tag">球星卡收藏</span>
+  <span class="tag">球星卡</span>
   <span class="tag">邮票</span>
   <span class="tag">书法</span>
   <span class="tag">编程</span>
